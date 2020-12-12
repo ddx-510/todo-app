@@ -45,6 +45,7 @@ class TodoApp extends React.Component {
   componentDidMount() {
     this.getTodoItems();
   }
+  
   getTodoItems() {
     axios
       .get("/api/v1/todo_items")
