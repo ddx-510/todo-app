@@ -1,8 +1,8 @@
-class Api::V1::TodoItemsController < ApplicationController
+class Api::V1::TagsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_todo_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_tag, only: [:show, :edit, :update, :destroy]
     def index
-        @todo_items = current_user.todo_items.all
+        @tags = current_user.tags.all
     end
 
     def show
@@ -16,13 +16,13 @@ class Api::V1::TodoItemsController < ApplicationController
     end
 
     def create
-      @todo_item = current_user.todo_items.build(todo_item_params)
+      @tag = current_user.tags.build(tag_params)
       if authorized?
         respond_to do |format|
-          if @todo_item.save
-            format.json { render :show, status: :created, location: api_v1_todo_item_path(@todo_item) }
+          if @tag.save
+            format.json { render :show, status: :created, location: api_v1_tag_path(@tag) }
           else
-            format.json { render json: @todo_item.errors, status: :unprocessable_entity }
+            format.json { render json: @tag.errors, status: :unprocessable_entity }
           end
         end
       else
@@ -33,10 +33,10 @@ class Api::V1::TodoItemsController < ApplicationController
     def update
       if authorized?
           respond_to do |format|
-            if @todo_item.update(todo_item_params)
-              format.json { render :show, status: :ok, location: api_v1_todo_item_path(@todo_item) }
+            if @tag.update(tag_params)
+              format.json { render :show, status: :ok, location: api_v1_tag_path(@tag) }
             else
-              format.json { render json: @todo_item.errors, status: :unprocessable_entity }
+              format.json { render json: @tag.errors, status: :unprocessable_entity }
             end
           end
       else
@@ -46,7 +46,7 @@ class Api::V1::TodoItemsController < ApplicationController
 
     def destroy
       if authorized?
-          @todo_item.destroy
+          @tag.destroy
           respond_to do |format|
             format.json { head :no_content }
           end
@@ -56,12 +56,12 @@ class Api::V1::TodoItemsController < ApplicationController
     end
 
     private
-        def set_todo_item
-            @todo_item = TodoItem.find(params[:id])
+        def set_tag
+            @tag = Tag.find(params[:id])
         end
 
         def authorized?
-            @todo_item.user == current_user
+            @tag.user == current_user
         end
 
         def handle_unauthorized
@@ -72,7 +72,7 @@ class Api::V1::TodoItemsController < ApplicationController
             end
         end
 
-        def todo_item_params
-          params.require(:todo_item).permit(:title, :complete)
+        def tag_params
+          params.require(:tag).permit(:title, :complete)
         end
 end

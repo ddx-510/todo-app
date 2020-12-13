@@ -5,6 +5,7 @@ import axios from "axios";
 import setAxiosHeaders from "./AxiosHeaders";
 
 import _ from "lodash";
+import TagMain from "./TagMain";
 
 class TodoItem extends React.Component {
   constructor(props) {
@@ -126,6 +127,10 @@ class TodoItem extends React.Component {
           </div>
           <button onClick={this.handleDestroy}
           className="btn btn-outline-danger">Delete</button>
+        </td>
+        
+        <td>
+          <TagMain/>
         </td>
       </tr>
     )
