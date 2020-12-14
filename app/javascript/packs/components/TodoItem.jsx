@@ -21,6 +21,7 @@ class TodoItem extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.updateTodoItem = this.updateTodoItem.bind(this);
     this.inputRef = React.createRef();
+    this.tagRef = React.createRef();
     this.completedRef = React.createRef();
 
   }
@@ -32,14 +33,15 @@ class TodoItem extends React.Component {
     });
     this.updateTodoItem();
   }
-
+  
   updateTodoItem = _.debounce(() => {
     setAxiosHeaders();
     axios
       .put(this.path, {
         todo_item: {
           title: this.inputRef.current.value,
-          complete: this.completedRef.current.checked
+          complete: this.completedRef.current.checked,
+          all_tags: this.tagRef.current.value
         }
       })
       .then(() => {
@@ -126,6 +128,17 @@ class TodoItem extends React.Component {
           </div>
           <button onClick={this.handleDestroy}
           className="btn btn-outline-danger">Delete</button>
+        </td>
+        <td>
+          <input
+            type="text"
+            defaultValue={todoItem.all_tags}
+            disabled={this.state.complete}
+            onChange={this.handleChange}
+            ref={this.tagRef}
+            className="form-control"
+            id={`todoItem__tag-${todoItem.id}`}
+          />
         </td>
       </tr>
     )

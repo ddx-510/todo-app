@@ -33,6 +33,7 @@ class TodoItems extends React.Component {
                 <th scope="col" className="text-right">
                   Actions
                 </th>
+                <th scope="col">Tags</th>
               </tr>
             </thead>
             <tbody>{this.props.children}</tbody>
