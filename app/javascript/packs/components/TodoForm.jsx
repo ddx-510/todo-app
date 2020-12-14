@@ -9,6 +9,7 @@ class TodoForm extends React.Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.titleRef = React.createRef()
+    this.tagRef = React.createRef()
   }
 
   handleSubmit(e) {
@@ -19,6 +20,7 @@ class TodoForm extends React.Component {
         todo_item: {
           title: this.titleRef.current.value,
           complete: false,
+          all_tags: this.tagRef.current.value
         },
       })
       .then(response => {
@@ -47,6 +49,19 @@ class TodoForm extends React.Component {
               placeholder="Write your todo item here..."
             />
           </div>
+
+            <div className="form-group col-md-4">
+              <input
+                type="text"
+                name="name"
+                ref={this.tagRef}
+                required
+                className="form-control"
+                id="tags"
+                placeholder="Tag separate with comma"
+              />
+            </div>
+
           <div className="form-group col-md-4">
             <button className="btn btn-outline-success btn-block">
               Add To Do Item
