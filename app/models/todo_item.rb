@@ -5,15 +5,16 @@ class TodoItem < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
-
-  def all_tags=(names)
-    self.tags = names.split(",").map do |name|
-        Tag.where(name: name.strip).first_or_create!
-    end
+  def all_tags=(tags_string)
+    tag_names = tags_string.split(",").collect{|s| s.strip.downcase}.uniq
+    new_or_found_tags = tag_names.collect { |tagname| Tag.find_or_create_by(name: tagname) }
+    self.tags = new_or_found_tags
   end
 
   def all_tags
-    self.tags.map(&:name).join(", ")
+    self.tags.collect do |tag|
+      tag.name
+    end.join(", ")
   end
 
   def self.tagged_with(name)

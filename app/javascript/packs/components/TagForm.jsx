@@ -4,28 +4,25 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import setAxiosHeaders from "./AxiosHeaders";
 
-class TodoForm extends React.Component {
+class TagForm extends React.Component {
   constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.titleRef = React.createRef()
-    this.tagRef = React.createRef()
+    this.nameRef = React.createRef()
   }
 
   handleSubmit(e) {
     e.preventDefault()
     setAxiosHeaders();
     axios
-      .post('/api/v1/todo_items', {
-        todo_item: {
-          title: this.titleRef.current.value,
-          complete: false,
-          all_tags: this.tagRef.current.value
+      .post('/api/v1/tags', {
+        tag: {
+          name: this.nameRef.current.value
         },
       })
       .then(response => {
-        const todoItem = response.data;
-        this.props.createTodoItem(todoItem);
+        const tagItem = response.data;
+        this.props.createTagItem(tagItem);
         this.props.clearErrors();
       })
       .catch(error => {
@@ -41,30 +38,18 @@ class TodoForm extends React.Component {
           <div className="form-group col-md-8">
             <input
               type="text"
-              name="title"
-              ref={this.titleRef}
+              name="name"
+              ref={this.nameRef}
               required
               className="form-control"
-              id="title"
-              placeholder="Write your todo item here..."
+              id="name"
+              placeholder="Write your tag item here..."
             />
           </div>
 
-            <div className="form-group col-md-4">
-              <input
-                type="text"
-                name="name"
-                ref={this.tagRef}
-                //required
-                className="form-control"
-                id="tags"
-                placeholder="Tag separate with comma"
-              />
-            </div>
-
           <div className="form-group col-md-4">
             <button className="btn btn-outline-success btn-block">
-              Add To Do Item
+              Add Tag
             </button>
           </div>
         </div>
@@ -73,10 +58,10 @@ class TodoForm extends React.Component {
   }
 }
 
-export default TodoForm
+export default TagForm
 
-TodoForm.propTypes = {
-  createTodoItem: PropTypes.func.isRequired,
+TagForm.propTypes = {
+  createTagItem: PropTypes.func.isRequired,
   handleErrors: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired
 }

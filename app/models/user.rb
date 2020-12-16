@@ -4,4 +4,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :todo_items, dependent: :destroy  # one user has many todos, and user deleted, todo deleted
+  has_many :tags, through: :todo_items
 end
