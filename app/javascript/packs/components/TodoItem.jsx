@@ -10,7 +10,7 @@ class TodoItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      complete: this.props.todoItem.complete,
+      complete: this.props.todoItem.complete
     }
 
 
@@ -33,7 +33,7 @@ class TodoItem extends React.Component {
     });
     this.updateTodoItem();
   }
-  
+
   updateTodoItem = _.debounce(() => {
     setAxiosHeaders();
     axios
@@ -61,6 +61,7 @@ class TodoItem extends React.Component {
         .delete(this.path)
         .then(response => {
           this.props.getTodoItems();
+          this.props.getTagItems();
         })
         .catch(error => {
           console.log(error);
@@ -150,6 +151,7 @@ export default TodoItem
 TodoItem.propTypes = {
   todoItem: PropTypes.object.isRequired,
   getTodoItems: PropTypes.func.isRequired,
+  getTagItems: PropTypes.func.isRequired,
   hideCompletedTodoItems: PropTypes.bool.isRequired,
   clearErrors: PropTypes.func.isRequired
 }
