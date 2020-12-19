@@ -53,6 +53,19 @@ class TodoApp extends React.Component {
     this.getTagItems();
   }
 
+  // remove duplicate elements based on key
+  getUnique(array, key) {
+    if (typeof key !== 'function') {
+      const property = key;
+      key = function(item) { return item[property]; };
+    }
+    return Array.from(array.reduce(function(map, item) {
+      const k = key(item);
+      if (!map.has(k)) map.set(k, item);
+      return map;
+    }, new Map()).values());
+  }
+
   getTodoItems() {
     axios
       .get("/api/v1/todo_items")
@@ -82,7 +95,9 @@ class TodoApp extends React.Component {
       .then(response => {
         this.clearErrors();
         this.setState({ isLoading: true });
-        const tagItems = response.data;
+        // need to remove dupilicate tags
+        const tagItems = this.getUnique(response.data, 'id');
+        console.log(tagItems);
         this.setState({ tagItems });
         this.setState({ isLoading: false });
       })
@@ -99,9 +114,10 @@ class TodoApp extends React.Component {
 
   createTodoItem(todoItem) {
     const todoItems = [todoItem, ...this.state.todoItems];
-    const tags = this.getTagItems();
+    // update the tags by calling getTagItems
+    const tag = this.getTagItems();
     this.setState({ todoItems });
-    this.setState({ tags });
+    //this.setState({ tags });
   }
 
   render() {
