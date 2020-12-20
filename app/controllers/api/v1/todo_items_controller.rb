@@ -2,8 +2,7 @@ class Api::V1::TodoItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_todo_item, only: [:show, :edit, :update, :destroy]
     def index
-      params[:tag] ? @todo_items = current_user.todo_items.tagged_with(params[:tag])
-                   : @todo_items  = current_user.todo_items.all
+      @todo_items  = current_user.todo_items.all
     end
 
     def show

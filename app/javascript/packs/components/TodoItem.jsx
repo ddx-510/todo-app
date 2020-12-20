@@ -17,7 +17,6 @@ class TodoItem extends React.Component {
     this.handleDestroy = this.handleDestroy.bind(this);
     this.path = `/api/v1/todo_items/${this.props.todoItem.id}`;
 
-
     this.handleChange = this.handleChange.bind(this);
     this.updateTodoItem = this.updateTodoItem.bind(this);
     this.inputRef = React.createRef();
@@ -27,7 +26,6 @@ class TodoItem extends React.Component {
   }
 
   handleChange() {
-    this.updateTodoItem();
     this.setState({
       complete: this.completedRef.current.checked
     });
@@ -46,11 +44,13 @@ class TodoItem extends React.Component {
       })
       .then(() => {
         this.props.clearErrors();
+        this.props.getTodoItems();
+        this.props.getTagItems();
       })
       .catch(error => {
         this.props.handleErrors(error);
       });
-  }, 1000);
+  }, 2000);
 
 
   handleDestroy() {
@@ -73,7 +73,7 @@ class TodoItem extends React.Component {
     const { todoItem } = this.props
     return (
       <tr
-        className={`${ this.state.complete && this.props.hideCompletedTodoItems ? `d-none` : "" } ${this.state.complete ? "table-light" : ""}`}
+        className={`${ this.state.complete  && this.props.hideCompletedTodoItems || !this.props.checkFiltered(this.props.todoItem) ? `d-none` : "" } ${this.state.complete ? "table-light" : ""}`}
       >
         <td>
           <svg
@@ -149,6 +149,8 @@ class TodoItem extends React.Component {
 export default TodoItem
 
 TodoItem.propTypes = {
+  checkFiltered: PropTypes.func.isRequired,
+  filterList: PropTypes.array.isRequired,
   todoItem: PropTypes.object.isRequired,
   getTodoItems: PropTypes.func.isRequired,
   getTagItems: PropTypes.func.isRequired,

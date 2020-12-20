@@ -17,6 +17,8 @@ class TodoApp extends React.Component {
     this.state = {
       todoItems: [],
       tagItems:[],
+      tagToggle:[],
+      filterList:[],
       hideCompletedTodoItems: false,
       isLoading: true,
       errorMessage: null
@@ -26,6 +28,11 @@ class TodoApp extends React.Component {
     this.getTagItems = this.getTagItems.bind(this);
     this.createTodoItem = this.createTodoItem.bind(this);
     this.toggleCompletedTodoItems = this.toggleCompletedTodoItems.bind(this);
+
+    this.addToList = this.addToList.bind(this);
+    this.deleteFromList = this.deleteFromList.bind(this);
+    this.updateTagToggle = this.updateTagToggle.bind(this);
+    this.checkFiltered = this.checkFiltered.bind(this);
 
     this.handleErrors = this.handleErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
@@ -46,6 +53,41 @@ class TodoApp extends React.Component {
     this.setState({
       hideCompletedTodoItems: !this.state.hideCompletedTodoItems
     });
+  }
+
+  checkFiltered(todoItem){
+    var filterList = this.state.filterList;
+    var tagList = todoItem.all_tags.split(", ");
+    var item_show = false;
+    if (filterList.length === 0) {
+      item_show = true;
+    }
+    else{
+      for (var i = 0; i < filterList.length; i++) {
+        item_show = item_show || tagList.includes(filterList[i]);
+      }
+    }
+    return item_show;
+  }
+
+  updateTagToggle(name){
+    const index = this.state.tagToggle.findIndex(el => el.name === name),
+          tagToggle = [...this.state.tagToggle] // important to create a copy, otherwise you'll modify state outside of setState call
+    tagToggle[index].item_show = !tagToggle[index].item_show ;
+    this.setState({ tagToggle });
+  }
+
+  addToList(newname){
+    const newList = this.state.filterList;
+    newList.push(newname);
+    this.state.filterList = newList;
+  }
+
+  deleteFromList(filter_name){
+    var checked = this.state.filterList;
+    var values = checked.indexOf(filter_name)
+    checked.splice(values, 1);
+    this.setState({filterList: checked});
   }
 
   componentDidMount() {
@@ -97,7 +139,19 @@ class TodoApp extends React.Component {
         this.setState({ isLoading: true });
         // need to remove dupilicate tags
         const tagItems = this.getUnique(response.data, 'id');
-        console.log(tagItems);
+
+        var tagToggle = [];
+        for (var i = 0; i < tagItems.length; i++) {
+          tagToggle.push(
+            {
+              name: tagItems[i].name,
+              item_show: false
+            });
+        }
+        var filterList = [];
+        this.setState({ filterList });
+
+        this.setState({ tagToggle });
         this.setState({ tagItems });
         this.setState({ isLoading: false });
       })
@@ -128,21 +182,6 @@ class TodoApp extends React.Component {
         )}
 
         <>
-          {!this.state.isLoading && (
-              <>
-                <TagItems>
-                  {this.state.tagItems.map(tagItem => (
-                    <TagItem
-                      key={tagItem.id}
-                      tagItem={tagItem}
-                      getTagItems={this.getTagItems}
-                      handleErrors={this.handleErrors}
-                      clearErrors={this.clearErrors}
-                    />
-                  ))}
-                </TagItems>
-            </>
-          )}
           {this.state.isLoading && <Spinner />}
         </>
 
@@ -153,6 +192,23 @@ class TodoApp extends React.Component {
                 handleErrors={this.handleErrors}
                 clearErrors={this.clearErrors}
               />
+                <TagItems>
+                  {this.state.tagItems.map(tagItem => (
+                    <TagItem
+                      key={tagItem.id}
+                      tagItem={tagItem}
+                      getTagItems={this.getTagItems}
+                      handleErrors={this.handleErrors}
+                      clearErrors={this.clearErrors}
+                      addToList={this.addToList}
+                      deleteFromList={this.deleteFromList}
+                      filterList={this.state.filterList}
+                      tagToggle={this.state.tagToggle}
+                      updateTagToggle={this.updateTagToggle}
+                    />
+                    ))}
+                </TagItems>
+
               <TodoItems
                 toggleCompletedTodoItems={this.toggleCompletedTodoItems}
                 hideCompletedTodoItems={this.state.hideCompletedTodoItems}
@@ -161,11 +217,15 @@ class TodoApp extends React.Component {
                   <TodoItem
                     key={todoItem.id}
                     todoItem={todoItem}
+                    filterList={this.state.filterList}
+                    tagToggle={this.state.tagToggle}
                     getTodoItems={this.getTodoItems}
                     getTagItems={this.getTagItems}
                     hideCompletedTodoItems={this.state.hideCompletedTodoItems}
                     handleErrors={this.handleErrors}
                     clearErrors={this.clearErrors}
+
+                    checkFiltered={this.checkFiltered}
                   />
                 ))}
               </TodoItems>

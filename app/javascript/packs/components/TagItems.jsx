@@ -13,13 +13,17 @@ class TagItems extends React.Component {
         <hr />
 
         <div className="table-responsive">
-          <table className="table">
+          <table>
             <thead>
               <tr>
                 <th scope="col">Tags</th>
               </tr>
             </thead>
-            <tbody>{this.props.children}</tbody>
+            <tbody>
+              <tr>
+                {this.props.children}
+              </tr>
+            </tbody>
           </table>
         </div>
       </>
