@@ -111,7 +111,6 @@ class TodoApp extends React.Component {
   getTodoItems() {
     axios
       .get("/api/v1/todo_items")
-      //.get("/broken-end-point")
       .then(response => {
         this.clearErrors();
         this.setState({ isLoading: true });
@@ -126,7 +125,6 @@ class TodoApp extends React.Component {
             message: "There was an error loading your todo items..."
           }
         });
-        //console.log(error);
       });
   }
 
@@ -162,7 +160,6 @@ class TodoApp extends React.Component {
             message: "There was an error loading your tags..."
           }
         });
-        //console.log(error);
       });
   }
 
@@ -171,7 +168,6 @@ class TodoApp extends React.Component {
     // update the tags by calling getTagItems
     const tag = this.getTagItems();
     this.setState({ todoItems });
-    //this.setState({ tags });
   }
 
   render() {
@@ -202,7 +198,6 @@ class TodoApp extends React.Component {
                       clearErrors={this.clearErrors}
                       addToList={this.addToList}
                       deleteFromList={this.deleteFromList}
-                      filterList={this.state.filterList}
                       tagToggle={this.state.tagToggle}
                       updateTagToggle={this.updateTagToggle}
                     />
@@ -224,7 +219,6 @@ class TodoApp extends React.Component {
                     hideCompletedTodoItems={this.state.hideCompletedTodoItems}
                     handleErrors={this.handleErrors}
                     clearErrors={this.clearErrors}
-
                     checkFiltered={this.checkFiltered}
                   />
                 ))}

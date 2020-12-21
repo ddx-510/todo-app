@@ -150,7 +150,6 @@ export default TodoItem
 
 TodoItem.propTypes = {
   checkFiltered: PropTypes.func.isRequired,
-  filterList: PropTypes.array.isRequired,
   todoItem: PropTypes.object.isRequired,
   getTodoItems: PropTypes.func.isRequired,
   getTagItems: PropTypes.func.isRequired,

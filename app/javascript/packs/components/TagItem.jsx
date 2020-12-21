@@ -43,7 +43,6 @@ export default TagItem
 TagItem.propTypes = {
   updateTagToggle: PropTypes.func.isRequired,
   tagToggle: PropTypes.array.isRequired,
-  filterList: PropTypes.array.isRequired,
   addToList: PropTypes.func.isRequired,
   deleteFromList: PropTypes.func.isRequired,
   tagItem: PropTypes.object.isRequired,
