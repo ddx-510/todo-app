@@ -21,12 +21,3 @@ require("./components/TodoApp");
 // Support component names relative to this directory:
 require('bootstrap');
 import 'bootstrap/dist/css/bootstrap';
-
-var componentRequireContext = require.context("components", true);
-var ReactRailsUJS = require("react_ujs");
-ReactRailsUJS.useContext(componentRequireContext);
-
-
-//var componentRequireContext = require.context("components", true);
-//var ReactRailsUJS = require("react_ujs");
-//ReactRailsUJS.useContext(componentRequireContext);
