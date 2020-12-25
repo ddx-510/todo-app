@@ -3,10 +3,12 @@
 CVWO Project
 
 Name: Dai Tianle
+
 Matriculation Number: A0196715U
 
 # Reference
 This app is developed based on the [tutorial](https://stevepolito.design/blog/rails-react-tutorial)
+For setting up ruby environment on latest mac os, I recommend this [tutorial](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/)
 
 # Working app
 
