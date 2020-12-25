@@ -1,10 +1,16 @@
-# README
+# Overview
 
+CVWO Project
+
+Name: Dai Tianle
+Matriculation Number: A0196715U
+
+# Reference
 This app is developed based on the [tutorial](https://stevepolito.design/blog/rails-react-tutorial)
 
 # Working app
 
-[Todonex](todo-nex.herokuapp.com)
+[Todonex](https://todo-nex.herokuapp.com/)
 
 ## Install
 
@@ -56,12 +62,6 @@ Using [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli):
 ```shell
 heroku git:remote -a project
 heroku git:remote --remote heroku-staging -a project-staging
-```
-
-## Serve
-
-```shell
-rails s
 ```
 
 ## Deploy
